@@ -26,3 +26,6 @@ people_df_names = spark.sql(query)
 
 # Print the top 10 names of the people
 print(people_df_names.show(10))
+
+
+#This is a self-contained PySpark application
