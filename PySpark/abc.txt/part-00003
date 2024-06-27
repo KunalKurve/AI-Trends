@@ -1,0 +1,2 @@
+2012-10-15 08:31:51,278 WARN org.apache.hadoop.hdfs.server.namenode.FSNamesystem: ReplicationMonitor thread received InterruptedException.java.lang.InterruptedException: sleep interrupted
+2012-10-15 08:37:58,382 WARN org.apache.hadoop.security.authentication.server.AuthenticationFilter: 'signature.secret' configuration not set, using a random value as secret

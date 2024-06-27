@@ -1,0 +1,2 @@
+2012-10-15 08:11:49,293 WARN org.apache.hadoop.hdfs.server.namenode.FSNamesystem: ReplicationMonitor thread received InterruptedException.java.lang.InterruptedException: sleep interrupted
+2012-10-15 08:25:03,900 WARN org.apache.hadoop.hdfs.server.namenode.FSNamesystem: ReplicationMonitor thread received InterruptedException.java.lang.InterruptedException: sleep interrupted

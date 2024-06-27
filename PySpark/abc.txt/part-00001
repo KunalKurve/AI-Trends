@@ -1,0 +1,1 @@
+2012-10-15 08:31:51,323 ERROR org.apache.hadoop.hdfs.server.namenode.NameNode: java.net.UnknownHostException: Invalid hostname for server: node
