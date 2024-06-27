@@ -1,0 +1,22 @@
+1. Spark SQL is having dependency on Hive Metastore
+2. Hive MetaStore is having dependency on Hadoop
+3. Hadoop is made up of 
+  1) HDFS (Storage)
+  2) YARN (Cluster Resource Manager)
+  3) MR (Distributed Programming Framework)
+
+4. HDFS (Storage) is having following daemon processes
+   NameNode, DataNode, SecondaryNameNode
+
+YARN (Cluster Resource Manager) is having following daemon processes
+ ResourceManager, NodeManager
+
+MR (Distributed Programming Framework) wont have any daemon processes
+
+
+
+Sequence will be
+1.Start HDFS
+2.Start YARN
+3.Start Hive Metastore
+4.Implement Start SQL applications 
