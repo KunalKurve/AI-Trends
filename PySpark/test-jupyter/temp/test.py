@@ -19,3 +19,5 @@ print(sc.textFile(file_path) \
 .reduceByKey(lambda x, y: x + y)\
 .map(lambda tup: (tup[1], tup[0]))\
 .sortByKey(ascending=False).take(10))
+
+#This is a self-contained PySpark application
