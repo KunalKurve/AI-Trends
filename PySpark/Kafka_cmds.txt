@@ -1,0 +1,116 @@
+go home
+
+run head -n 10
+
+run-kafka_zookeeper_server.sh -s start
+
+jps -ln
+
+./run-kafka_server.sh
+
+kafka-topics.sh
+
+Create topic 
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic first_topic --create
+
+$kafka-topics.sh
+
+1) Create a topic
+So, the first thing you want to do is kafka-topics, and we need to reference zookeeper,
+and the reason we need to reference zookeeper is that, to create a topic, we have to 
+point to zookeeper.
+On third CLI give following command
+>>>>$kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic first_topic --create
+
+2) Yes indeed, when we create a topic, we have to say how many partitions we want.
+we are going to want three partitions
+>>>>$kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic first_topic --create --partitions 3
+
+3) So that's right, as well. When we create a topic, as I said, we have to specify 
+the number of partitions, but also the number of replication-factor.
+So set the replication factor to 2.
+>>>>$kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic first_topic --create  --partitions 3 --replication-factor 2
+
+
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic first_topic --create  --partitions 3 --replication-factor 1
+
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --list
+
+
+4) List the topics
+SO how do we know that our topic has been created?
+Well, give the following command to list the kafka topics
+
+>>>>$kafka-topics.sh --zookeeper 127.0.0.1:2181 --list
+
+
+5) Describe the topic 
+Okay, so now if we want to learn more about the topic, we want to know how many 
+partitions there is, we want to know where they're assigned, etc...
+give the following command to list the kafka topics
+>>>>$kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic first_topic --describe
+
+
+
+6) Exercise
+----------------
+Create a new topic, having name as second_topic, having six partitions, and then 
+the replication factor, which is going to be one.
+
+List all the topics to confirm the creation of the above topic.
+
+Producer
+—----------
+$kafka-console-producer.sh
+
+1) Produce messages
+So we are going to launch our first kafka-console-producer.
+>>>>$kafka-console-producer.sh --broker-list 127.0.0.1:9092 --topic first_topic
+
+2) So give following command
+>>>>$kafka-console-producer.sh --broker-list 127.0.0.1:9092 --topic first_topic    --producer-property acks=all
+And again, we get the little carrot starting, start entering the messages as shown
+
+Consumer
+—-----------
+$kafka-console-consumer.sh
+
+1) Consume/read the messages
+Open a new terminal window (say console consumer window)
+so let's give it a try.
+>>>>kafka-console-consumer.sh --bootstrap-server 127.0.0.1:9092 --topic first_topic
+
+2) But how do we do to read all the messages in the topic?
+But how do we do to read all the messages in the topic? 
+Because sometimes we need to. 
+So, we launch the exact same command. But this time, we will do from beginning.
+And by doing from beginning, we are going to ask console consumer to go to the 
+beginning of topic and tell what the other is.
+^C(Ctrl + C) the console consumer terminal, and again give following command
+>>>>$kafka-console-consumer.sh --bootstrap-server 127.0.0.1:9092 --topic first_topic --from-beginning
+
+
+
+------------------------------------------------------------------
+
+Consumer Group
+—--------------------
+
+1) Creating console consumer belonging to the group
+In third CLI (consumer1 cli) give following command
+>>>>kafka-console-consumer.sh --bootstrap-server 127.0.0.1:9092 --topic first_topic --group my-first-application
+So as we expect, this is a new console consumer and it's part of the 
+my-first-application group and because we don't read from beginning, 
+well we don't see any messages.
+
+
+18048 DataNode
+17872 NameNode
+18609 NodeManager
+19140 Jps
+19029 RunJar  -> hivemetastore
+17206 SparkSubmit 
+5431 QuorumPeerMain -> Zookepper
+18265 SecondaryNameNode
+7162 Kafka
+18458 ResourceManager
