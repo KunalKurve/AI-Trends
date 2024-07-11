@@ -1,0 +1,56 @@
+Point - 01: Spark SQL is having dependency on Hive Metastore. 
+
+Point - 02: Hive Metastore in having depemdy on Hadoop. 
+
+Point - 03: Hadoop has components as: HDFS(Storage), YARN(Cluster Resource Manager), MR(Distributed Application). (Spark can be compared with MR bcz both are distributed applications).
+
+Point - 04: HDFS(Storage) is having following daemon processes: NameNode, DataNode, Secondary Namenode
+
+Point - 05: YARN(Cluster Resource Manager) is having following daemon processes: ResourceManager, NodeManager
+
+Point - 06: MR(Distributed Application) won't have any daemon processes.
+
+Sequence will be:
+1. Start HDFS
+2. Start YARN
+3. Start Hive Metastore
+4. Implement Spark SQL Application
+
+ls -lh *.sh
+ls -lh sun.*
+
+Steps to start HDFS:
+
+head -n 10 run-hdfs.sh (First 10 lines where '-n' if for number of lines)
+
+Step - 01: Run following command: ```hdfs namenode -format```
+
+Step - 02: then run ```./run-hdfs.sh -s OPTION``` (replace option with 'start' or 'stop' ; syntax given below)
+'''
+Usage: ./run-hdfs.sh -s OPTION
+ -s OPTION Specify the service start or stop mode
+ OPTION will be either start or stop
+'''
+
+
+
+Steps to start YARN:
+
+head -n 10 run-yarn.sh (First 10 lines where '-n' if for number of lines)
+
+Step - 01: Run ```./run-yarn.sh -s start```
+
+Step - 02: Run ```hdfs dfs -mkdir -p /user/talentum``` ( Post running can be seen in file using head command)
+
+
+
+
+Steps to start Hive Metastore:
+
+head -n 10 run-hivemetastore.sh (First 10 lines where '-n' if for number of lines)
+
+Step - 01: Complete the prerequisites, change the directory ```hdfs dfs -mkdir -p /user/hive/warehouse```
+
+Step - 02: Run ```./run-hivemetastore.sh -s start```
+
+Why Hive Metastore is needed, bcz TempView is created in Hive Metastore.
