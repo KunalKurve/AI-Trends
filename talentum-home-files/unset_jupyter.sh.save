@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#Description: Change to the directory where this script is and 
+#             run this script in source mode from the terminal.
+#             Keep the terminal window same where you want the 
+#             environmental variables in the script to be unset.
+#Usage: source unset_jupyter.sh
+
+unset PYSPARK_DRIVER_PYTHON
+unset PYSPARK_DRIVER_PYTHON_OPTS

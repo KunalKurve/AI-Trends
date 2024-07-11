@@ -1,0 +1,4 @@
+i) Linux Kernel 4.0 and Later
+/usr/bin/vmhgfs-fuse .host:/shared /home/talentum/shared -o subtype=vmhgfs-fuse
+ii) Linux Kernel Prior to 4.0
+mount -t vmhgfs .host:/ /home/user1/shares
