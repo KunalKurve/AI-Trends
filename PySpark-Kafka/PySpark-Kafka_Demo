@@ -1,0 +1,69 @@
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic first_topic --create --partitions 3
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic first_topic --create --partitions 3 --replication-factor 2
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic first_topic --create --partitions 3 --replication-factor 1
+kafka-console-producer.sh --broker-list 127.0.0.1:9092 --topic first_topic --producer-property acks=all
+kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic first_topic --from-beginning
+
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --list
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic <topicname> --delete
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic new_topic --delete
+
+##############PySpark-Kafka working code########################
+#1 start pyspark shell
+pyspark --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.5 --master local[2] 
+
+#2 create a topic - bash shell(Perform below activity by first starting zookeeper and then kafka service)
+kafka-topics.sh --create --zookeeper 127.0.0.1:2181 --replication-factor 1 --partitions 1 --topic voters
+
+#3 Create streaming DataFrame reading from Kafka
+kafkaVoterDF = spark.readStream.format("kafka").option("kafka.bootstrap.servers", "127.0.0.1:9092").option("subscribe","voters").option("startingOffsets", "earliest").load()
+
+#4 Query for and display raw data.
+rawVoterQuery = kafkaVoterDF.writeStream.trigger(processingTime='10 seconds').outputMode("append").format("console").start()
+
+
+#5 Give statement #3 and #4 on Pyspark shell #1 in that order
+
+#6 Execute pushKafkaData.sh as shown below
+./pushKafkaData.sh
+
+#7 Go back to the PySpark shell - you should see streaming data now.
+
+#8 Stop the query in the Spark shell
+rawVoterQuery.stop()
+
+#9 stop the data push into Kafka 
+./pushKafkaData.sh^C
+
+
+#10 Extract Data Payload as a String
+
+kafkaVoterDF = spark.readStream.format("kafka").option("kafka.bootstrap.servers", "127.0.0.1:9092").option("subscribe", "voters").option("startingOffsets", "earliest").load()
+
+voterStringDF = kafkaVoterDF.selectExpr("CAST(value AS STRING)")
+
+stringVoterQuery = voterStringDF.writeStream.trigger(processingTime='10 seconds').outputMode("append").format("console").option("truncate", "false").start()
+
+#11 Stop the query in the Spark shell.
+stringVoterQuery.stop()
+
+#12 Transform to Json and process
+
+kafkaVoterDF = spark.readStream.format("kafka").option("kafka.bootstrap.servers", "127.0.0.1:9092").option("subscribe", "voters").option("startingOffsets", "earliest").load()
+
+from pyspark.sql.types import StringType, LongType, StructType, StructField
+
+voterSchema = StructType([StructField("gender",StringType(), True), StructField("age",LongType(), True), StructField("party",StringType(), True)])
+
+from pyspark.sql.functions import from_json
+
+voterStatsDF = kafkaVoterDF.select(from_json(kafkaVoterDF["value"].cast(StringType()), voterSchema).alias("voterJSON")).groupBy("voterJSON.gender", "voterJSON.party").count()
+
+voterStatsQuery = voterStatsDF.writeStream.trigger(processingTime='1 minute').outputMode("complete").format("console").start()
+
+voterStatsQuery.stop()
+
+##############PySpark-Kafka working code########################
+
+Ref - http://spark.apache.org/docs/2.4.5/structured-streaming-kafka-integration.html
+
